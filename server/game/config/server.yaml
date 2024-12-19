@@ -1,0 +1,38 @@
+# 服务器基础配置
+server:
+  jwtTokenTime: 36000 # 过期时间
+  jwtUser: "jwtUser" # 签名颁发者
+
+# 监听
+listen:
+  addr: 0.0.0.0
+  tcpport: 10000
+  wssport: 10001
+  httpport: 10002
+  grpcpport: 10003
+
+# 数据库
+mysql:
+  addr: 192.168.88.8
+  port: 3306
+  user: game
+  pwd: 123456
+  semaphore: 5
+  pool: 200
+  dbacc: pitaya_acc
+  dblog: pitaya_log
+
+# redis
+redis:
+  addr: 192.168.88.8
+  port: 6379
+  pwd: A123456
+  db: 1
+
+# nats
+nats:
+  url: nats://192.168.88.8:4222
+
+# etcd
+etcd:
+  url: 192.168.88.8:2379

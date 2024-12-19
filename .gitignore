@@ -1,0 +1,3 @@
+server/game/logs/
+*.exe
+client/goclient/logs/

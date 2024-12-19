@@ -1,0 +1,15 @@
+language:
+  code_0: succeed
+  code_9: Server not found
+  code_10: system error
+  code_11: message undefined
+  code_12: The binding network is incorrect and needs to be reconnected
+  code_13: token error
+  code_14: parameter error
+  code_1000: account already exists
+  code_1001: account does not exist
+  code_1002: machine code exceeded the limit
+  code_1003: wrong password
+  code_1004: fail to register
+  code_1005: nonce error
+  code_1006: decryption failure

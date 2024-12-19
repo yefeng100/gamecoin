@@ -1,0 +1,17 @@
+下载最新版本protoc.exe
+    https://github.com/protocolbuffers/protobuf/
+
+下载go插件
+    // 已失效 go get -u github.com/golang/protobuf/protoc-gen-go
+    // go install github.com/golang/protobuf/protoc-gen-go@latest
+    go get -u google.golang.org/protobuf/
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+拷贝文件到当前目录
+    protoc.exe    从下载目录拷贝到当前目录
+    protoc-gen-go.exe    从go的path目录拷贝到当前目录， 默认目录：C:\Users\Administrator\go\bin
+
+执行命令
+    单个生成 protoc --go_out=. msgresponse.proto
+    批量生成 protoc --go_out=. *.proto
+

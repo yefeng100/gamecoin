@@ -1,0 +1,26 @@
+pitaya 框架
+	etcd 服务发现
+	nats 消息中间件
+	架构可以多服务器
+
+
+消息结构：
+	第一位：数据标识(1握手，2握手成功，3心跳，4数据，5踢人)， 
+	第2，3，4位：是数据长度，最大不能超过16MB
+	第五位：是请求类型（0和1：request[0不压缩消息,1压缩消息], 2和3：notify[2不压缩消息,3压缩消息]，4和5：Response[4不压缩消息,5压缩消息]， 6和7：Push[6不压缩消息,7压缩消息]）
+			消息是否有压缩if flag&gzipMask == gzipMask
+	第六位：消息ID，如果消息超过这一位，则增加一位，那后面的数据就会往后面移
+	第七位：路由字符串长度
+	第八位~最后：数据
+	
+pitaya笔记
+
+全局
+	var app pitaya.Pitaya
+前端-网络数据流程
+	acceptor.NewTCPAcceptor	创建TCP监听类
+服务器监听
+	listen() 监听端口
+		ListenAndServe() 	监听和服务
+			listener.Accept()	监听连接
+		app.handlerService.Handle(conn) 	//处理客户端连接消息
