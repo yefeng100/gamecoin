@@ -13,26 +13,26 @@ listen:
 
 # 数据库
 mysql:
-  addr: 192.168.88.8
+  addr: 192.168.13.128
   port: 3306
   user: game
   pwd: 123456
   semaphore: 5
   pool: 200
-  dbacc: pitaya_acc
-  dblog: pitaya_log
+  dbacc: py_data
+  dblog: py_log
 
 # redis
 redis:
-  addr: 192.168.88.8
+  addr: 192.168.13.128
   port: 6379
-  pwd: A123456
-  db: 1
+  pwd:
+  db: 0
 
 # nats
 nats:
-  url: nats://192.168.88.8:4222
+  url: nats://192.168.13.128:4222
 
 # etcd
 etcd:
-  url: 192.168.88.8:2379
+  url: 192.168.13.128:2379

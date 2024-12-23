@@ -1,0 +1,8 @@
+# 合约信息
+contract:
+  onoff: 1
+  url: https://bsc-testnet-dataseed.bnbchain.org
+  privatekey: 2c75b07800fa5bd3ec0bd77099f109071c517a1508857d2a600fde2ae8b562d5
+
+bsc:
+  spendcoinaddr: 0x77198c2EC3f07951Da4372a28c3d9B0fceA5Eb8F

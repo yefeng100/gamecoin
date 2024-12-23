@@ -70,6 +70,7 @@ func (p *HandlerRemote) MainMsg(ctx context.Context, req *pb.MsgRequest) (*pb.Ms
 		res.Code, res.Msg = handlerHomeRollList(ctx, userId, req)
 	default:
 		res.Code = constants.ResCodeUndefined
+		logger.Log.Errorf("MainMsg msg code err. code:%v, res:%v", res.Code, res)
 	}
 	return res, nil
 }

@@ -23,7 +23,7 @@ func TestAes(t *testing.T) {
 	_ = json.Unmarshal(deBuf, n2)
 	println(n2)
 
-	enBuf = AesEncryptECB([]byte("123456"), []byte("Key-123^456_10000"))
+	enBuf = AesEncryptECB([]byte("123456"), []byte("Key-123^456_80307"))
 
 	deBuf = AesDecryptECB(enBuf, []byte("1111"))
 	println(deBuf)

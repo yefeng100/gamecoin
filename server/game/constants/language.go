@@ -46,9 +46,22 @@ func GetCodeMsg(languageCode string, code int32) string {
 	key := fmt.Sprintf("code_%d", code)
 	switch languageCode {
 	case LanguageCodeEn:
-		return en[key]
+		msg, ok := en[key]
+		if !ok {
+			return ""
+		}
+		return msg
 	case LanguageCodeCn:
-		return cn[key]
+		msg, ok := cn[key]
+		if !ok {
+			return ""
+		}
+		return msg
 	}
-	return cn[key]
+	//默认英文
+	msg, ok := en[key]
+	if !ok {
+		return ""
+	}
+	return msg
 }
