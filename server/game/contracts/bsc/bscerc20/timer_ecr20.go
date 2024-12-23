@@ -77,11 +77,11 @@ func (t *TimerErc20) EventApproval() {
 			//logger.Log.Error("EventApproval ParseApproval err", zap.Error(err))
 			continue
 		}
-		hash := ev.Raw.TxHash.String()
-		block := ev.Raw.BlockNumber
-		userAddr := ev.Owner.String()
-		conAddr := ev.Spender.String()
-		coinAddr := ev.Raw.Address.String()
+		hash := ev.Raw.TxHash.String()      //hash
+		block := ev.Raw.BlockNumber         //块
+		userAddr := ev.Owner.String()       //玩家钱包地址
+		conAddr := ev.Spender.String()      //合约钱包地址(被授权的合约)
+		coinAddr := ev.Raw.Address.String() //币地址(usdt)
 		if strings.ToLower(conAddr) == strings.ToLower("0x77198c2EC3f07951Da4372a28c3d9B0fceA5Eb8F") {
 			logger.Log.Debugf("----block:%d, hash:%s, Value:%d, conAddr:%s, userAddr:%s, coinAddr:%s", block, hash, utilc.CoinToScore(ev.Value), conAddr, userAddr, coinAddr)
 

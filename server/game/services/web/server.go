@@ -19,8 +19,9 @@ func Start(app pitaya.Pitaya) {
 		//初始化合约
 		bscspendcoin.GetIns() //授权
 		//test
-		bscspendcoin.SpendUserCoin("0x337610d27c682E347C9cD60BD4b3b107C9d34dDd", "0x47B8EcBA4fdaaF1D47cd60920B9834B333548E51", "0x057188BEe8C920b2F6FB677F035C4EaF19157D31", 10000)
-		bscspendcoin.Owner()
+		//bscspendcoin.SpendUserCoin("0x337610d27c682E347C9cD60BD4b3b107C9d34dDd", "0x47B8EcBA4fdaaF1D47cd60920B9834B333548E51", "0x057188BEe8C920b2F6FB677F035C4EaF19157D31", 10000)
+		//bscspendcoin.Owner()
+		//erc20.SubscribeContract("0x337610d27c682E347C9cD60BD4b3b107C9d34dDd")
 	}
 	//初始化vip
 	configvip.Ins()
