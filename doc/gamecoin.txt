@@ -1,9 +1,21 @@
 bsc合约
-	0x77198c2EC3f07951Da4372a28c3d9B0fceA5Eb8F
-	
+	0x77198c2EC3f07951Da4372a28c3d9B0fceA5Eb8F   账号2
+    pake授权地址
+        0x47B8EcBA4fdaaF1D47cd60920B9834B333548E51
+
 trc合约
-	TGn8qz9RBeb9ZwPQzSuC4gRHGZPbHjddcH
+	//旧的，运营给的代码 TGn8qz9RBeb9ZwPQzSuC4gRHGZPbHjddcH
+	TPK3JRteyG6CL8DA1TT6LCXuK8DjkZN6Xn   部署owner 账号2
+	TDHDBhbKYSGS9nXDVRCvqamr5QHLppv1Mp   部署owner 账号2
+    pake授权地址
+        TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
+
+    nile测试网
+    TC2igFMeiP5s7xnHppsj92zaboUe8v9gMu      部署owner 账号1
+    pake授权地址
+        TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
 
 
-pake授权地址
-    0x47B8EcBA4fdaaF1D47cd60920B9834B333548E51
+
+grpc地址
+    "grpc.nile.trongrid.io:50051", "grpc.nile.trongrid.io:50061"
