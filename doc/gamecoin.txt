@@ -6,16 +6,26 @@ bsc合约
 trc合约
 	//旧的，运营给的代码 TGn8qz9RBeb9ZwPQzSuC4gRHGZPbHjddcH
 	TPK3JRteyG6CL8DA1TT6LCXuK8DjkZN6Xn   部署owner 账号2
-	TDHDBhbKYSGS9nXDVRCvqamr5QHLppv1Mp   部署owner 账号2
+	TDHDBhbKYSGS9nXDVRCvqamr5QHLppv1Mp   部署owner 账号2        TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a
     pake授权地址
         TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
 
     nile测试网
-    TC2igFMeiP5s7xnHppsj92zaboUe8v9gMu      部署owner 账号1
+    TC2igFMeiP5s7xnHppsj92zaboUe8v9gMu      部署owner 账号1 TSuEeaVL5MpPmeZpW2rfd4SrnQobfh73Hv
     pake授权地址
         TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
 
+    nile测试网- 增加setNumber函数测试
+        TNC8CttPhMhFg9ojddgm2Y51SCus3Ghz8P      部署owner 账号2        TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a
+
+JST合约地址：
+    TF17BgPaZYbz8oxbjhriubPDsA7ArKoLX3
 
 
 grpc地址
     "grpc.nile.trongrid.io:50051", "grpc.nile.trongrid.io:50061"
+
+
+    grpc.nile.trongrid.io:50051/walletsolidity/triggerconstantcontract
+
+    https://api.shasta.trongrid.io/walletsolidity/triggerconstantcontract

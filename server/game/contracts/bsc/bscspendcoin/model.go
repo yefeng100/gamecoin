@@ -30,7 +30,7 @@ func GetIns() *Contract {
 	mu.Lock()
 	defer mu.Unlock()
 	if c == nil {
-		url := cfg.GetContIns().GetConf().GetString("contract.url")
+		url := cfg.GetContIns().GetConf().GetString("bsc.url")
 		addr := cfg.GetContIns().GetConf().GetString("bsc.spendcoinaddr")
 		if addr == "" || url == "" {
 			logger.Log.Error("InitContract1 err", zap.String("url", url), zap.String("addr", addr))

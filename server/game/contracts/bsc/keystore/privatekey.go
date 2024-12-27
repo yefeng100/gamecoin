@@ -13,7 +13,7 @@ var privateKey *ecdsa.PrivateKey = nil
 
 // initPrivateKey 初始化私钥
 func initPrivateKey() {
-	priKey := cfg.GetContIns().GetConf().GetString("contract.privatekey")
+	priKey := cfg.GetContIns().GetConf().GetString("bsc.privatekey")
 	pkHex, err := crypto.HexToECDSA(priKey)
 	if err != nil {
 		logger.Log.Errorf("InitPrivateKey err. %v", err)
