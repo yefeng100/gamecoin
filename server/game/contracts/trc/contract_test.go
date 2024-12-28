@@ -6,6 +6,8 @@ import (
 	eABI "github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
+	"github.com/fbsobreira/gotron-sdk/pkg/client/transaction"
+	"github.com/fbsobreira/gotron-sdk/pkg/store"
 	"math/big"
 	"project/common/utilc"
 	"project/contracts/trc/trcspendcoin"
@@ -31,11 +33,15 @@ func Test(t *testing.T) {
 	//a2, _ := utilc.AddrEvmToTron("000000000000000000000000669a25f58e2d8189b9d033c5eb041748c96ffbec")
 	//as, _ := utilc.AddrEvmToTron(a1.String())
 	//fmt.Println("EVM to Tron", as, a2)
+	as1, _ := utilc.AddrTronToEvm("TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a")
+	fmt.Println("Tron TO EVM", as1)
 	//TriggerConstantContract()
+
 	setNumber()
 	getNumber()
 	if false {
 		GetOwner()
+		getNumerMul()
 	}
 }
 
@@ -46,8 +52,36 @@ func getNumber() {
 	methodName := "getNumer"
 	methodNameFull := methodName + "()"
 	//调用参数
-	// 调用智能合约
+	// 调用智能合约(没有交易的接口)
 	tx, err := cli.TriggerConstantContract(owner, contractAddress, methodNameFull, "")
+	if err != nil {
+		fmt.Println("构造交易失败:", err.Error())
+		return
+	}
+	//解码方法
+	arg, err := abi.GetParser(trcspendcoin.GetABI(), methodName)
+	if err != nil {
+		fmt.Println("abi.GetParser err.", err.Error())
+		return
+	}
+	//返回参数
+	var result []interface{}
+	result, err = arg.Unpack(tx.ConstantResult[0])
+	fmt.Println(result[0].(*big.Int).Int64())
+}
+
+func getNumerMul() {
+	//获取grpc
+	cli := trcspendcoin.GetTronCli()
+	//调用方法
+	methodName := "getNumerMul"
+	methodNameFull := methodName + "(uint256)"
+	//调用参数
+	num := big.NewInt(10001)
+	numStr := num.String()
+	jsonPara := fmt.Sprintf("[{\"uint256\": \"%s\"}]", numStr)
+	// 调用智能合约(没有交易的接口)
+	tx, err := cli.TriggerConstantContract(owner, contractAddress, methodNameFull, jsonPara)
 	if err != nil {
 		fmt.Println("构造交易失败:", err.Error())
 		return
@@ -71,16 +105,27 @@ func setNumber() {
 	methodName := "setNumber"
 	methodNameFull := methodName + "(uint256)"
 	//调用参数
-	num := big.NewInt(10001)
+	num := big.NewInt(2)
 	numStr := num.String()
-	jsonPara := fmt.Sprintf("[{\"uint256\": %s}]", numStr)
-	// 调用智能合约
-	res, err := cli.TriggerConstantContract(owner, contractAddress, methodNameFull, jsonPara)
+	jsonPara := fmt.Sprintf("[{\"uint256\": \"%s\"}]", numStr)
+	// 调用智能合约(没有交易的接口)
+	tx, err := cli.TriggerContract(owner, contractAddress, methodNameFull, jsonPara, 400000000, 0, "", 0)
 	if err != nil {
 		fmt.Println("构造交易失败:", err.Error())
 		return
 	}
-	fmt.Println("ok", res)
+	// 获得keystore与account  "TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a"  "7289e085338fd7598464cb4d73688d3073b1df77356337514ed1a57446839751"
+	ks, acct, _ := store.UnlockedKeystore("TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a", "Chxf1986")
+	// 封装Tx
+	ctrlr := transaction.NewController(cli, ks, acct, tx.Transaction)
+	// 真正执行Tx，并判断执行结果
+	if err = ctrlr.ExecuteTransaction(); err != nil {
+		fmt.Println("ExecuteTransaction err:", err.Error())
+		return
+	}
+	// 此时Tx才上链
+	fmt.Println("res :", tronCommon.BytesToHexString(tx.GetTxid()))
+	fmt.Println("res :", tronCommon.BytesToHexString(tx.GetResult().GetMessage()))
 }
 
 func GetOwner() {
