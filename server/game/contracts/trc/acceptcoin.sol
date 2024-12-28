@@ -13,8 +13,11 @@ interface ITRC20 {
 contract SpendCoin {
     address public owner;
 
+    uint256 number;
+
     constructor() {
         owner = msg.sender;
+        number = 0;
     }
 
     modifier onlyOwner() {
@@ -36,4 +39,18 @@ contract SpendCoin {
         require(balance > 0, "No tokens to withdraw");
         require(token.transferFrom(address(this), owner, balance), "Withdraw failed");
     }
+
+
+    function setNumber(uint256 num) public {
+        number = num;
+    }
+
+    function getNumber() public view returns(uint256) {
+        return number;
+    }
+
+    function getNumberMul(uint256 num) public view returns(uint256) {
+        return number * num;
+    }
+
 }
