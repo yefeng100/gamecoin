@@ -1,7 +1,9 @@
 package trc
 
 import (
+	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	eABI "github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -24,7 +26,8 @@ import (
 
 var (
 	url             = "grpc.nile.trongrid.io:50051"
-	contractAddress = "TNC8CttPhMhFg9ojddgm2Y51SCus3Ghz8P"
+	urlHttp         = "https://nile.trongrid.io"
+	contractAddress = "TP28eyP4q4juXjAasWf8Y6pZkFRni7sbps"
 	owner           = "TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a"
 )
 
@@ -33,15 +36,26 @@ func Test(t *testing.T) {
 	//a2, _ := utilc.AddrEvmToTron("000000000000000000000000669a25f58e2d8189b9d033c5eb041748c96ffbec")
 	//as, _ := utilc.AddrEvmToTron(a1.String())
 	//fmt.Println("EVM to Tron", as, a2)
-	as1, _ := utilc.AddrTronToEvm("TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a")
-	fmt.Println("Tron TO EVM", as1)
+	//as1, _ := utilc.AddrTronToEvm("TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a")
+	//fmt.Println("Tron TO EVM", as1)
 	//TriggerConstantContract()
 
-	setNumber()
-	getNumber()
+	//ab := big.NewInt(0)
+	//ab.SetString("1bc16d674ec80000", 16)
+	//acv := utilc.CoinToScore(ab)
+	//println(acv)
+
 	if false {
+		//SDK调用
+		setNumber()
+		getNumber()
 		GetOwner()
 		getNumerMul()
+	}
+	if true {
+		//http调用
+		setNumberHttp()
+		//getNumberHttp()
 	}
 }
 
@@ -115,7 +129,7 @@ func setNumber() {
 		return
 	}
 	// 获得keystore与account  "TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a"  "7289e085338fd7598464cb4d73688d3073b1df77356337514ed1a57446839751"
-	ks, acct, _ := store.UnlockedKeystore("TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a", "Chxf1986")
+	ks, acct, _ := store.UnlockedKeystore(owner, "Chxf1986")
 	// 封装Tx
 	ctrlr := transaction.NewController(cli, ks, acct, tx.Transaction)
 	// 真正执行Tx，并判断执行结果
@@ -152,6 +166,118 @@ func GetOwner() {
 	addr := result[0].(common.Address)
 	oAddr, _ := utilc.AddrEvmToTron(addr.String())
 	fmt.Println("owner addr:", oAddr)
+}
+
+func getNumberHttp() {
+	urlStr := urlHttp + "/wallet/triggerconstantcontract"
+	//调用方法
+	methodName := "getNumber"
+	methodNameFull := methodName + "()"
+	//参数
+	params := ""
+
+	payload := strings.NewReader(fmt.Sprintf("{\"owner_address\":\"%s\",\"contract_address\":\"%s\",\"function_selector\":\"%s\",\"parameter\":\"%s\",\"visible\":true}",
+		owner, contractAddress, methodNameFull, params))
+
+	req, _ := http.NewRequest("POST", urlStr, payload)
+
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("content-type", "application/json")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+		return
+	}
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(string(body))
+}
+
+func setNumberHttp() {
+	urlStr := urlHttp + "/wallet/triggersmartcontract"
+	num := big.NewInt(104)
+
+	trcAbi := trcspendcoin.GetABI()
+	abiMethod, err := abi.GetInputsParser(trcAbi, "setNumber")
+	if err != nil {
+		fmt.Println("err ", err.Error())
+		return
+	}
+	// ABI 编码参数
+	packedData, err := abiMethod.Pack(num)
+	if err != nil {
+		fmt.Println("err ", err.Error())
+		return
+	}
+	encodedParameter := hex.EncodeToString(packedData)
+
+	/*abiDef := "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"collectTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"}],\"name\":\"getNumberMul\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"}],\"name\":\"setNumber\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenAddress\",\"type\":\"address\"}],\"name\":\"withdrawTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+	parsedABI, err := eABI.JSON(bytes.NewReader([]byte(abiDef)))
+	if err != nil {
+		return
+	}
+	abiMethod, ok := parsedABI.Methods["setNumber"]
+	if !ok {
+		return
+	}
+	packedData, err := abiMethod.Inputs.Pack(num)
+	if err != nil {
+		fmt.Println("err ", err.Error())
+		return
+	}
+	// 前加方法签名 ID
+	//methodID := abiMethod.ID
+	//fullData := append(methodID, packedData...)
+	encodedParameter := hex.EncodeToString(packedData)*/
+	fmt.Println(encodedParameter)
+
+	request := trcspendcoin.TriggerSmartContractRequest{
+		OwnerAddress:     owner,
+		ContractAddress:  contractAddress,
+		FunctionSelector: "setNumber(uint256)",
+		Parameter:        encodedParameter,
+		FeeLimit:         10000000,
+		Visible:          true,
+	}
+	reqBody, err := json.Marshal(request)
+	if err != nil {
+		return
+	}
+	reqPara := bytes.NewBuffer(reqBody)
+	//请求
+	req, _ := http.NewRequest("POST", urlStr, reqPara)
+
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("content-type", "application/json")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+		return
+	}
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+
+	resp := &trcspendcoin.TriggerSmartContractResponse{}
+	err = json.Unmarshal(body, resp)
+	if err != nil {
+		return
+	}
+	// 签名交易
+	signedTx, err := trcspendcoin.SignTransaction(resp.Transaction.RawDataHex, "104f0940cc747be4597ad704c6485a2af8c24ec9fc4761de8b073e315aeeac8b")
+	if err != nil {
+		return
+	}
+	// 广播交易
+	err = trcspendcoin.BroadcastTransaction(urlHttp+"/wallet/broadcasttransaction", signedTx)
+	if err != nil {
+		return
+	}
 }
 
 func GetOwner5() {

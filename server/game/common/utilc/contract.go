@@ -1,11 +1,13 @@
 package utilc
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/btcsuite/btcutil/base58"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 )
@@ -74,4 +76,35 @@ func sha256Hex(msg string) (string, error) {
 	}
 	hash := sha256.Sum256(bytes)
 	return hex.EncodeToString(hash[:]), nil
+}
+
+// EncodeParameters 将方法签名和参数进行ABI编码
+func EncodeParameters(method string, toAddress string, amount uint64) (string, error) {
+	abiDefinition := fmt.Sprintf(`[{"name":"%s","type":"function","inputs":[
+		{"name":"to","type":"address"},
+		{"name":"value","type":"uint256"}]}]`, method)
+
+	parsedABI, err := abi.JSON(bytes.NewReader([]byte(abiDefinition)))
+	if err != nil {
+		return "", fmt.Errorf("failed to parse ABI: %w", err)
+	}
+
+	abiMethod, ok := parsedABI.Methods[method]
+	if !ok {
+		return "", fmt.Errorf("method %s not found in ABI", method)
+	}
+
+	to := common.HexToAddress(toAddress)
+
+	// ABI 编码参数
+	packedData, err := abiMethod.Inputs.Pack(to, amount)
+	if err != nil {
+		return "", fmt.Errorf("failed to pack parameters: %w", err)
+	}
+
+	// 前加方法签名 ID
+	methodID := abiMethod.ID
+	fullData := append(methodID, packedData...)
+
+	return hex.EncodeToString(fullData), nil
 }

@@ -10,6 +10,11 @@ trc合约
     pake授权地址
         TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
 
+    shasta测试网络
+        合约： TXvDpq36W56EYLiTAAWZqPFTMr1bTpingc
+        部署owner 账号2： TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a
+
+
     nile测试网
     TC2igFMeiP5s7xnHppsj92zaboUe8v9gMu      部署owner 账号1 TSuEeaVL5MpPmeZpW2rfd4SrnQobfh73Hv
     pake授权地址
@@ -18,9 +23,15 @@ trc合约
     nile测试网- 增加setNumber函数测试
         TNC8CttPhMhFg9ojddgm2Y51SCus3Ghz8P      部署owner 账号2        TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a
 
+    nile测试网- 增加setNumber函数测试
+        TP28eyP4q4juXjAasWf8Y6pZkFRni7sbps      部署owner 账号2        TKKib32o2zPBoXWKbTUQoBtNFM5LYFKb4a
+        pake授权地址
+            TJ694J6ZBR22tLgPnJA9CktJjhqULPKh6C
+        失败hash
+            ce4d6d8357f37b270fa9b8c14f1461b91f05b3a2b75147b7aee4bfae4d8bb9a2
+
 JST合约地址：
     TF17BgPaZYbz8oxbjhriubPDsA7ArKoLX3
-
 
 grpc地址
     "grpc.nile.trongrid.io:50051", "grpc.nile.trongrid.io:50061"
@@ -29,3 +40,6 @@ grpc地址
     grpc.nile.trongrid.io:50051/walletsolidity/triggerconstantcontract
 
     https://api.shasta.trongrid.io/walletsolidity/triggerconstantcontract
+
+ setNumber
+    hash: 97bbf4383daaf3313e0749565355066247a27b92b7e7c2f43b227d19dae7857e
